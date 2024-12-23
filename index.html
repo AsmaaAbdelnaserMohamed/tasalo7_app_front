@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>استمارة رفع ميداني لطلبات مركزالمساحة ثلاثية الابعاد</title>
+    <meta name="theme-color" content="#ff0000">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="fonts/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+
+            margin: 0;
+            text-align: right;
+        }
+
+        body #main-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: linear-gradient(#000000a4, #000),
+                url('images/msd_background.png');
+            background-size: cover;
+            padding-top: 1rem;
+        }
+
+        body #main-container>div {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 0 1.5rem;
+        }
+
+        .login-container {
+            background-color: #f9f6f1;
+            background: linear-gradient(#ddd8cf, #f9f6f1 30%, #f9f6f1 70%, #ddd8cf);
+            padding: 40px 20px;
+            border-radius: 16px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation-name: show;
+            animation-duration: 1s;
+            animation-fill-mode: forwards;
+            box-shadow: 0 0 10px gray;
+        }
+
+        @keyframes show {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+                border-radius: 4px;
+            }
+
+            100% {
+                opacity: 100%;
+                border-radius: 16px;
+            }
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .form-group input {
+            width: 100%;
+        }
+
+        label {
+            margin-bottom: 5px;
+            direction: rtl;
+            position: absolute;
+            right: 12px;
+            top: 0;
+            transform: translateY(-50%);
+            background-color: #f9f6f1;
+            padding: 0 10px;
+            font-size: 16px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            padding: 10px 8px 8px;
+            direction: rtl;
+            margin-bottom: 10px;
+            border: 1px solid #474747;
+            border-radius: 3px;
+            /* font-size: 20px; */
+            background-color: #f9f6f1;
+        }
+
+        button {
+            width: fit-content;
+            padding: 12px;
+            background-color: #c28e2d;
+            color: #ffffff;
+            border: none;
+            border-radius: 9px;
+            /* text-shadow: 0px 0px 2px black; */
+            cursor: pointer;
+            margin: auto;
+            font-weight: bold;
+            transition: 0.3s;
+            border: 1px solid #b37200;
+        }
+
+        button:hover {
+            background-color: #d3a34f;
+            transform: scale(1.1);
+        }
+
+        .error-msg {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .iframe-container {
+            width: 100%;
+            height: 100%;
+            display: none;
+            /* مخفي حتى يتم تسجيل الدخول */
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #guidnes-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* زر تثبيت التطبيق */
+        #installBtn {
+            padding: 10px;
+            background-color: #1f5f13;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 10px;
+            display: none;
+            /* مخفي افتراضيًا */
+        }
+
+        #installBtn:hover {
+            background-color: #0056b3;
+        }
+
+        .containerImg {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+        }
+
+        .imgs {
+            width: 280px;
+            height: 250px;
+        }
+
+        footer {
+            display: flex;
+            padding: 0rem;
+            background: #ab783e2e;
+            padding: -8px;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        footer>div {
+            /* background: linear-gradient(160deg, #f9f6f1, #ddd8cf); */
+            border-radius: 1rem;
+            /* padding: 0.5rem; */
+        }
+
+        footer>div>div {
+            width: fit-content;
+            margin: 0 auto 1rem;
+        }
+
+        footer ul {
+            width: fit-content;
+            list-style-type: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            margin: 0 auto 1rem;
+        }
+
+        footer ul li {
+            width: 35px;
+            height: 35px;
+            background-color: transparent;
+            margin: 0 4px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        footer ul li:nth-of-type(1):hover {
+            background-color: #355593;
+            border-color: #355593;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        footer ul li:nth-of-type(2):hover {
+            background-color: #F56040;
+            border-color: #F56040;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        footer ul li:nth-of-type(3):hover {
+            background-color: #FF0000;
+            border-color: #FF0000;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        footer ul li:nth-of-type(4):hover {
+            background-color: #0077B5;
+            border-color: #0077B5;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        footer ul li a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        footer h4 {
+            color: black;
+            text-align: center;
+            margin: 0;
+            color: #fff;
+        }
+
+        footer img {
+            width: 80px;
+            height: 50px;
+            margin-right: 2vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div id="main-container">
+            <div>
+                <div class="login-container" id="login-container">
+                    <div class="containerImg">
+                        <img class="imgs" src="./images/logo.png" alt="">
+                    </div>
+                    <h2>تسجيل الدخول</h2>
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="username">اسم المستخدم</label>
+                            <input type="text" id="username" name="username" required="" autocomplete="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">كلمة المرور</label>
+                            <input type="password" id="password" name="password" required="">
+                        </div>
+                        <button type="button" id="submitBtn">تسجيل الدخول</button>
+                        <div id="error-msg" class="error-msg"></div>
+                    </form>
+                    <button id="installBtn">تثبيت التطبيق</button>
+                </div>
+                <div class="iframe-container" id="iframe-container">
+                    <iframe id="guidnes-frame"></iframe>
+                </div>
+            </div>
+            <footer>
+                <img src="./images/edge-prologo.png" alt="">
+                <h4>جميع الحقوق محفوظة لشركة ايدج برو لسنة 2024</h4>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // القيم المثبتة لاسم المستخدم وكلمة المرور
+        const fixedUsername = 'test';
+        const fixedPassword = 'test123';
+
+        document.getElementById('submitBtn').addEventListener('click', function () {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+
+            // تحقق من القيم المدخلة
+            if (username === fixedUsername && password === fixedPassword) {
+                alert('تم تسجيل الدخول بنجاح');
+                showGuidnesContent();
+            } else {
+                errorMsg.textContent = 'اسم المستخدم أو كلمة المرور غير صحيحة.';
+            }
+        });
+
+        function showGuidnesContent() {
+            const loginContainer = document.getElementById('login-container');
+            const iframeContainer = document.getElementById('iframe-container');
+            loginContainer.style.display = 'none';
+            iframeContainer.style.display = 'block';
+
+            document.getElementById('guidnes-frame').src = 'guidnesList.html';
+        }
+
+        // تسجيل خدمة الـ Service Worker
+        let deferredPrompt;
+        const installBtn = document.getElementById('installBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'block';
+
+            installBtn.addEventListener('click', () => {
+                installBtn.style.display = 'none';
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    } else {
+                        console.log('User dismissed the install prompt');
+                    }
+                    deferredPrompt = null;
+                });
+            });
+        });
+
+        window.addEventListener('appinstalled', (event) => {
+            console.log('PWA installed');
+        });
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('/sw.js').then(function (registration) {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                }, function (error) {
+                    console.log('Service Worker registration failed:', error);
+                });
+            });
+        }
+    </script>
+</body>
+
+
+</html>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قائمة بيانات الطلب</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            /* background-color: #f4f4f4; */
+            background: linear-gradient(90deg, #ceba865c, #daceaf14);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        table {
+            border-spacing: 10px !important;
+        }
+
+        .table-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f6ee;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+            border: 2px solid #c4c4c4;
+        }
+
+        .search-container {
+            direction: rtl;
+            font-size: 18px;
+        }
+
+        input#searchInput {
+            text-align: center;
+            font-size: 13px;
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 2px solid rgb(168, 168, 168);
+        }
+
+        .search-container label {
+            padding: 3px;
+            font-size: 16px;
+            background-color: #926c41;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            display: block;
+            width: fit-content;
+            margin: auto;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            padding: 8px 16px;
+        }
+
+        /* pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 16px;
+        }
+
+        button#prevButton,
+        #nextButton {
+            text-align: right;
+            padding: 5px 10px;
+            font-size: 16px;
+            background-color: #8F693D;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        button#prevButton:hover,
+        #nextButton:hover {
+            background-color: #ab783e;
+        }
+
+        #nextButton {
+            margin-left: 4px;
+        }
+
+        #prevButton {
+            margin-right: 4px;
+        }
+
+        input#filteredTotal {
+            width: 5vh;
+            border-radius: 4px;
+            font-size: 12px;
+            text-align: center;
+            font-weight: bold;
+            border: 2px solid #a9a1a1;
+            background-color: #EBE5DA;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            direction: rtl;
+        }
+
+        .data-table thead {
+            border: 2px solid #6e5131;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            /* border: 2px solid #ddd; */
+            text-align: center;
+            word-break: break-word;
+        }
+
+        .data-table th {
+            background-color: #AB783E;
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+            color: #fff;
+        }
+
+        .data-table th {
+            border-left: 2px solid #6e5131;
+
+        }
+
+        .data-table th .sort-icon {
+            margin-left: 5px;
+        }
+
+        .data-table td {
+            border: 1px solid;
+            background-color: #EBE5DA;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        button.btn-guidance {
+            font-size: 16px;
+            background-color: green;
+            color: white;
+            border: 2px solid black;
+            border-radius: 6px;
+            cursor: pointer;
+            padding: 6px;
+        }
+
+        th#sort-sector,
+        th#sort-ssec,
+        td:nth-child() {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                padding: 10px;
+                height: auto;
+                overflow: auto;
+            }
+
+            .table-container {
+                padding: 10px;
+                margin: 10px;
+                width: 100%;
+            }
+
+            .search-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-container input[type="text"] {
+                max-width: 100%;
+                font-size: 14px;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 8px;
+                font-size: 12px;
+            }
+
+            button.btn-guidance {
+                font-size: 14px;
+                padding: 4px;
+            }
+
+            .search-container label {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .data-table th,
+            .data-table td {
+                padding: 5px;
+                font-size: 9px;
+                font-weight: bold;
+                text-wrap: nowrap;
+            }
+
+            .search-container input[type="text"] {
+                padding: 8px;
+                font-size: 12px;
+            }
+
+            button.btn-guidance {
+                font-size: 12px;
+                padding: 4px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="table-container">
+        <div class="search-container">
+            <label for="searchInput">استعلام</label>
+            <input type="text" id="searchInput" placeholder="........بحث........" />
+        </div>
+        <br>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th id="sort-mo3aina_number">رقم المعاينة</th>
+                    <th id="sort-applicantname">اسم المواطن</th>
+                    <th id="sort-ssec">المحافظة</th>
+                    <th id="sort-ssec">العنوان</th>
+                    <th id="sort-ssec">رقم التليفون</th>
+                    <th id="sort-ssec" style="display: none;">x_coordinate</th>
+                    <th id="sort-ssec" style="display: none;">y_coordinate</th>
+                    <th>
+                        <span>الذهاب</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="dataTableBody">
+                <!-- سيتم ملء البيانات هنا -->
+            </tbody>
+        </table>
+        <div class="pagination">
+            <button id="prevButton" onclick="changePage(-1)">السابق</button>
+            <input id="filteredTotal" type="text" value="0" readonly>
+            <button id="nextButton" onclick="changePage(1)">التالي</button>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 1; // الصفحة الافتراضية
+        let sortColumn = 'requestnumber'; // تغيير اسم العمود ليتطابق مع البيانات
+        let sortOrder = 'asc';
+
+        const staticData = [
+            { requestnumber: "817240012059", applicant_name: "عبير محمود عبدالله", gov: "القاهرة", address: "محافظة القاهرة - حي حدائق القبه - شياخة الاميرية الجنوبية - ش امتداد ولي العهد - عمارة 353", phone_number: "01023257433", x_coordinate: "29.987", y_coordinate: "31.232" },
+            { requestnumber: "1030240051683", applicant_name: "محمد عبدالفتاح عبدالرحمن رجب", gov: "دمياط", address: "محافظة دمياط - مركز ومدينه دمياط - حى اول - منطقه مبنى ديوان المحافظه - عقار-محمد عبدالفتاح عبدالرحمن رجب", phone_number: "01222136927", x_coordinate: "30.012", y_coordinate: "31.215" },
+            { requestnumber: "602240236765", applicant_name: "مدحت ممدوح يسى ميخائيل", gov: "المنيا", address: "محافظة المنيا - المنيا - مدينة المنيا - حي وسط - شارع جامع القشيري - عقار-مدحت ممدوح يسى ميخائيل", phone_number: "01227557775", x_coordinate: "31.215", y_coordinate: "30.987" },
+            { requestnumber: "502240088730", applicant_name: "حسين عبد العظيم محمد على عطا الله", gov: "أسوان", address: "محافظة اسوان - مركز ومدينة أسوان - مركز ومدينة اسوان - حى جنوب - خلف عمارات التأمين الاهليه (عشوائيات ) - عقار-عمارة حسين عبدالعظيم محمد على ومصطفى محمد مصطفى", phone_number: "01124605015", x_coordinate: "30.080", y_coordinate: "31.300" }
+        ];
+
+        const itemsPerPage = 10; // عدد العناصر لكل صفحة
+
+        function fetchData(searchQuery = '', sortBy = sortColumn, order = sortOrder) {
+            // فلترة البيانات بناءً على البحث
+            let filteredData = staticData.filter(item =>
+                item.requestnumber.includes(searchQuery) ||
+                item.applicant_name.includes(searchQuery) ||
+                item.gov.includes(searchQuery) ||
+                item.address.includes(searchQuery) ||
+                item.phone_number.includes(searchQuery)
+            );
+
+            console.log(filteredData); // طباعة البيانات المُفلترة للتأكد من صحتها
+
+            // ترتيب البيانات
+            filteredData.sort((a, b) => {
+                if (order === 'asc') {
+                    return a[sortBy].localeCompare(b[sortBy]);
+                } else {
+                    return b[sortBy].localeCompare(a[sortBy]);
+                }
+            });
+
+            // تقسيم البيانات إلى صفحات
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const paginatedData = filteredData.slice(startIndex, startIndex + itemsPerPage);
+
+            populateTable(paginatedData);
+            updatePagination({ currentPage, totalPages });
+            updateFilteredTotal(filteredData.length); // تحديث العدد الإجمالي للبيانات المُفلترة
+        }
+
+        function updateFilteredTotal(total) {
+            const filteredTotalInput = document.getElementById('filteredTotal');
+            if (filteredTotalInput) {
+                filteredTotalInput.value = total;
+            }
+        }
+
+        function changePage(direction) {
+            const newPage = currentPage + direction;
+            const totalPages = Math.ceil(staticData.length / itemsPerPage);
+
+            if (newPage > 0 && newPage <= totalPages) {
+                currentPage = newPage;
+                fetchData(document.getElementById('searchInput').value, sortColumn, sortOrder);
+            }
+        }
+
+        function populateTable(data) {
+            const tableBody = document.getElementById('dataTableBody');
+            tableBody.innerHTML = '';  // تأكد من تفريغ الجدول قبل إضافة البيانات
+
+            // إضافة سجل لكل عنصر في البيانات
+            data.forEach(item => {
+                console.log(item);  // طباعة العنصر في console للتحقق من محتوياته
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+                    <td id="mo3aina_number">${item.requestnumber}</td>
+                    <td id="requester_name">${item.applicant_name}</td>
+                    <td id="gov">${item.gov}</td>
+                    <td id="detailed_address">${item.address}</td>
+                    <td id="phonenumber">${item.phone_number}</td>
+                    <td id="x_coordinate" style="display: none;">${item.x_coordinate}</td>
+                    <td id="y_coordinate" style="display: none;">${item.y_coordinate}</td>
+                    <td>
+                        <button onclick="navigateToGuidnes(this.parentElement.parentElement);" class="btn-guidance">الذهاب الي</button>
+                    </td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        function updatePagination(pagination) {
+            const prevButton = document.getElementById('prevButton');
+            const nextButton = document.getElementById('nextButton');
+
+            // تعطيل زر السابق إذا كنا في الصفحة الأولى
+            prevButton.disabled = pagination.currentPage <= 1;
+
+            // تعطيل زر التالي إذا كنا في الصفحة الأخيرة
+            nextButton.disabled = pagination.currentPage >= pagination.totalPages;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // إضافة مستمع حدث لمربع البحث
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', () => {
+                    fetchData(searchInput.value); // استدعاء دالة fetchData مع نص البحث
+                });
+            }
+
+            // تحميل البيانات عند التحميل الأولي للصفحة
+            fetchData();
+        });
+
+        function navigateToGuidnes(row) {
+            const mo3aina_number = row.querySelector('#mo3aina_number').textContent;
+            const requester_name = row.querySelector('#requester_name').textContent;
+            const gov = row.querySelector('#gov').textContent;
+            const detailed_address = row.querySelector('#detailed_address').textContent;
+            const phonenumber = row.querySelector('#phonenumber').textContent;
+            const x_coordinate = row.querySelector('#x_coordinate').textContent;
+            const y_coordinate = row.querySelector('#y_coordinate').textContent;
+
+            // تخزين البيانات في localStorage
+            localStorage.setItem('mo3aina_number', mo3aina_number);
+            localStorage.setItem('requester_name', requester_name);
+            localStorage.setItem('gov', gov);
+            localStorage.setItem('detailed_address', detailed_address);
+            localStorage.setItem('phonenumber', phonenumber);
+            localStorage.setItem('x_coordinate', x_coordinate);
+            localStorage.setItem('y_coordinate', y_coordinate);
+
+            // التنقل إلى صفحة التفاصيل
+            window.location.href = 'guidnes.html';
+        }
+    </script>
+</body>
+
+
+</html>

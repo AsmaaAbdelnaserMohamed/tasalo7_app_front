@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>محضر إرشاد رفع مساحي</title>
+    <meta name="theme-color" content="#ff0000" />
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="/images/favicon.ico">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-title">
+                <p class="titlee">المركز التكنولوجي <br> للتسجيل المساحي العقاري</p>
+            </div>
+            <div class="header-text">
+                <h2>محضر إرشاد رفع مساحي</h2>
+            </div>
+            <div class="header-logo">
+                <img src="images/icons-192.png" alt="Logo" style="width: 100%;">
+            </div>
+        </div>
+        <form id="fileUploadForm" enctype="multipart/form-data">
+            <div class="content">
+                <div class="right-section">
+                    <div class="form-group">
+                        <label for="request_number">رقم الطلب</label>
+                        <input type="text" id="request-number" name="request_number" value="03-0302-0-00000207899">
+                    </div>
+                    <div class="form-group">
+                        <div id="krokyMap">
+                            <h5>كروكي:</h5>
+                            <div class="map">
+                                <canvas id="map-canvas"></canvas>
+
+                                <div class="input-container">
+                                    <input type="text" id="input-top" class="input-top" placeholder="الشمالي">
+                                    <div id="dropdown-top" class="dropdown-content">
+                                        <div>جار</div>
+                                        <div>شارع</div>
+                                        <div>قطعة</div>
+                                    </div>
+                                </div>
+
+                                <div class="input-container">
+                                    <input type="text" id="input-bottom" class="input-bottom" placeholder="الجنوبي">
+                                    <div id="dropdown-bottom" class="dropdown-content">
+                                        <div>جار</div>
+                                        <div>شارع</div>
+                                        <div>قطعة</div>
+                                    </div>
+                                </div>
+
+                                <div class="input-container">
+                                    <input type="text" id="input-left" class="input-left" placeholder="الغربي">
+                                    <div id="dropdown-left" class="dropdown-content">
+                                        <div>جار</div>
+                                        <div>شارع</div>
+                                        <div>قطعة</div>
+                                    </div>
+                                </div>
+
+                                <div class="input-container">
+                                    <input type="text" id="input-right" class="input-right" placeholder="الشرقي">
+                                    <div id="dropdown-right" class="dropdown-content">
+                                        <div>جار</div>
+                                        <div>شارع</div>
+                                        <div>قطعة</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" id="exportKroky">تصدير الصورة</button>
+                        <br>
+                        <div class="tools-operation">
+                            <button type="button" onclick="startDrawing()">ابدأ الرسم</button>
+                            <button id="endDrawingButton" type="button" onclick="endDrawing()">إنهاء الرسم</button>
+                            <button type="button" id="deleteObjectButton">حذف</button>
+                            <button type="button" onclick="clearCanvas()">مسح الكل</button>
+                            <br>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="btns">
+                        <button type="button" id="send-data" style="display: none;">إرسال البيانات</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div id="responseMessage"></div>
+    </div>
+
+    <script>
+        document.getElementById("exportKroky").addEventListener("click", function () {
+            const krokyMap = document.getElementById("krokyMap");
+            const requestNumber = document.getElementById("request-number").value; // Get request number
+
+            // Use dom-to-image to take a screenshot of the map
+            domtoimage.toBlob(krokyMap, {
+                bgcolor: '#ffffff',
+                width: krokyMap.offsetWidth * 1, // تقليل العرض بنسبة 20%
+                height: krokyMap.offsetHeight * 1.2 // تقليل الارتفاع بنسبة 20%
+            }) // Set a background color if needed
+                .then(function (blob) {
+                    // Create FormData object to send the image with key 'kroqui-image' and request number
+                    const formData = new FormData();
+                    formData.append('requestNumber', requestNumber); // Add request number
+                    formData.append('kroqui-image', blob, 'kroky_image.jpg'); // Add image file
+                    // Get token from localStorage
+                    const token = localStorage.getItem('token');
+
+                    // Send image to the API
+                    fetch('http://localhost:5000/api/saveData', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`, // Use token from localStorage
+                        },
+                        body: formData
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to upload image');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            // Handle response data
+                            document.getElementById("responseMessage").innerHTML = "Image uploaded successfully!";
+                        })
+                        .catch(error => {
+                            // Handle error
+                            document.getElementById("responseMessage").innerHTML = "Error uploading image.";
+                            console.error('Error:', error);
+                        });
+                });
+        });
+
+    </script>
+
+    <script src="/signature_pad.min.js"></script>
+    <script src="dom-to-image.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script src="fabric.min.js"></script>
+    <script src="scripts.js"></script>
+</body>
+
+</html>

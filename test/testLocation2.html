@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocation Example</title>
+</head>
+<body>
+    <button id="getLocationButton">احصل على موقعي</button>
+    <p id="locationOutput"></p>
+
+    <script>
+        document.getElementById('getLocationButton').addEventListener('click', function () {
+            const userConfirmation = confirm("هل متأكد من موقعك الحالي ؟");
+
+            if (userConfirmation) {
+                // التحقق من إذن الموقع باستخدام Permissions API
+                navigator.permissions.query({ name: 'geolocation' }).then(function(result) {
+                    if (result.state === 'granted') {
+                        // الإذن مُعطى، يمكن طلب الموقع مباشرة
+                        console.log("إذن الموقع مُعطى.");
+                        navigator.geolocation.getCurrentPosition(showPosition, showError);
+                    } else if (result.state === 'prompt') {
+                        // الإذن لم يُطلب بعد، سيظهر مربع حوار لطلب الإذن
+                        console.log("لم يُطلب الإذن بعد، سيتم طلبه الآن.");
+                        navigator.geolocation.getCurrentPosition(showPosition, showError);
+                    } else if (result.state === 'denied') {
+                        // الإذن مرفوض، لا يمكن الوصول إلى الموقع
+                        console.log("تم رفض الإذن للوصول إلى الموقع.");
+                        alert("لقد تم رفض الإذن للوصول إلى الموقع. يرجى تغيير إعدادات الأذونات في المتصفح.");
+                    }
+                }).catch(function(error) {
+                    console.error("حدث خطأ أثناء التحقق من الأذونات: " + error.message);
+                });
+            } else {
+                alert("تم إلغاء عملية تحديد الموقع.");
+            }
+        });
+
+        // دالة عرض الإحداثيات
+        function showPosition(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            document.getElementById('locationOutput').innerHTML =
+                "خط العرض: " + latitude + "<br>خط الطول: " + longitude;
+        }
+
+        // دالة معالجة الأخطاء
+        function showError(error) {
+            let errorMessage = "";
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    errorMessage = "تم رفض الإذن للوصول إلى الموقع الجغرافي.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    errorMessage = "الموقع غير متاح.";
+                    break;
+                case error.TIMEOUT:
+                    errorMessage = "انتهت مهلة الطلب.";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    errorMessage = "حدث خطأ غير معروف.";
+                    break;
+            }
+            alert(errorMessage);
+        }
+    </script>
+</body>
+</html>

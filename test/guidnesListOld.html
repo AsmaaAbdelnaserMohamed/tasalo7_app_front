@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قائمة بيانات الطلب</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .table-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+
+        .search-container {
+            direction: rtl;
+            font-size: 18px;
+        }
+
+        input#searchInput {
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .search-container label {
+            padding: 3px;
+            font-size: 16px;
+            background-color: green;
+            color: white;
+            border: 2px solid black;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2px;
+        }
+
+        button#prevButton,
+        #nextButton {
+            padding: 3px;
+            font-size: 10px;
+            background-color: green;
+            color: white;
+            border: 2px solid black;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 2px;
+        }
+
+        #nextButton {
+            margin-left: 2px;
+        }
+
+        input#filteredTotal {
+            width: 5vh;
+            border-radius: 42%;
+            font-size: 12px;
+            text-align: center;
+            font-weight: bold;
+            border: 2px solid #a9a1a1;
+            background: #e0f7fa;
+            /* color: darkblue; */
+        }
+
+        /* محتويات ال list */
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            direction: rtl;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            border: 2px solid #ddd;
+            text-align: center;
+            word-break: break-word;
+        }
+
+        .data-table th {
+            background-color: #e0f7fa;
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .data-table th .sort-icon {
+            margin-left: 5px;
+        }
+
+        .data-table td {
+            background-color: #fff;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        button.btn-guidance {
+            font-size: 16px;
+            background-color: green;
+            color: white;
+            border: 2px solid black;
+            border-radius: 6px;
+            cursor: pointer;
+            padding: 6px;
+        }
+
+        th#sort-sector,
+        th#sort-ssec,
+        td:nth-child() {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                padding: 10px;
+                height: auto;
+                overflow: auto;
+            }
+
+            .table-container {
+                padding: 10px;
+                margin: 10px;
+                width: 100%;
+            }
+
+            .search-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-container input[type="text"] {
+                max-width: 100%;
+                font-size: 14px;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 8px;
+                font-size: 12px;
+            }
+
+            button.btn-guidance {
+                font-size: 14px;
+                padding: 4px;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .data-table th,
+            .data-table td {
+                padding: 5px;
+                font-size: 9px;
+                font-weight: bold;
+                text-wrap: nowrap;
+            }
+
+            .search-container input[type="text"] {
+                padding: 8px;
+                font-size: 12px;
+            }
+
+            button.btn-guidance {
+                font-size: 12px;
+                padding: 4px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="table-container">
+        <div class="search-container">
+            <label for="searchInput">استعلام</label>
+            <input type="text" id="searchInput" placeholder="....بحث...." />
+        </div>
+        <br>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th id="sort-requestnumber">رقم الطلب <span class="sort-icon">&#9662;</span></th>
+                    <th id="sort-requestid" style="display: none;">كود الطلب <span class="sort-icon">&#9662;</span></th>
+                    <th id="sort-applicantname">اسم مقدم الطلب <span class="sort-icon">&#9662;</span></th>
+                    <th id="sort-area" style="display: none;">المساحة طبقاً للطلب <span class="sort-icon">&#9662;</span>
+                    </th>
+                    <th id="sort-companyname">اسم الشركة المسئولة <span class="sort-icon">&#9662;</span></th>
+                    <th id="sort-sectorc" style="display: none;">كود القسم <span class="sort-icon">&#9662;</span></th>
+                    <th id="sort-ssecc" style="display: none;">كود الشياخة <span class="sort-icon">&#9662;</span></th>
+                    <th id="sort-sector">القسم <span class="sort-icon">&#9662;</span></th>
+                    <th id="sort-ssec">الشياخة <span class="sort-icon">&#9662;</span></th>
+                    <th id="sort-fullname" style="display: none;">اسم صاحب الطلب<span class="sort-icon">&#9662;</span>
+                    </th>
+                    <th id="sort-survey_team_id">كود الطاقم المساحي <span class="sort-icon">&#9662;</span></th>
+                    <th id="sort-governorateid" style="display: none;">كود المحافظة <span
+                            class="sort-icon">&#9662;</span></th>
+
+                    <th>الذهاب إلى محضر الارشاد</th>
+                </tr>
+            </thead>
+            <tbody id="dataTableBody">
+            </tbody>
+        </table>
+        <div class="pagination">
+            <button id="prevButton" onclick="changePage(-1) ">السابق</button>
+            <input id="filteredTotal" type="text" value="0" readonly>
+            <button id="nextButton" onclick="changePage(1)">التالي</button>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 3;
+        let sortColumn = 'requestnumber';
+        let sortOrder = 'asc';
+        function fetchData(page = currentPage, searchQuery = '', sortBy = sortColumn, order = sortOrder) {
+            const token = localStorage.getItem('token');
+            const url = `http://localhost:3500/api/listdata?page=${page}&sort=${sortBy}&order=${order}&search=${encodeURIComponent(searchQuery)}`;
+            console.log('Fetching URL:', url);
+            fetch(url, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data && data.data && Array.isArray(data.data)) {
+                        populateTable(data.data);
+                        updatePagination(data.pagination);
+                        updateFilteredTotal(data.pagination.filteredTotal);
+                    } else {
+                        console.error('Unexpected response format:', data);
+                        alert('برجاء المحاولة مرة أخرى.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('لا يوجد بيانات مطابقة للبحث.');
+                });
+        }
+
+        function updateFilteredTotal(total) {
+            const filteredTotalInput = document.getElementById('filteredTotal');
+            if (filteredTotalInput) {
+                filteredTotalInput.value = total;
+            }
+        }
+
+
+        function changePage(direction) {
+            const newPage = currentPage + direction;
+            if (newPage > 0) {
+                currentPage = newPage;
+                fetchData(currentPage, document.getElementById('searchInput').value, sortColumn, sortOrder);
+            }
+        }
+
+        function populateTable(data) {
+            const tableBody = document.getElementById('dataTableBody');
+            tableBody.innerHTML = '';
+
+            data.forEach(item => {
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+            <td id="requestnumber">${item.requestnumber}</td>
+            <td id="requestid" style="display: none;">${item.requestid}</td>
+            <td id="arabicfullname">${item.arabicfullname}</td>
+            <td id="area" style="display: none;">${item.area} ${item.areatype}</td>
+            <td id="companyname">${item.companyname}</td>
+            <td id="sec" style="display: none;">${item.regionid}</td>
+            <td id="ssec" style="display: none;">${item.districtid}</td>
+            <td id="secText">${item.sec}</td>
+            <td id="ssecText">${item.ssec}</td>
+            <td id="fullname" style="display: none;">${item.fullname}</td>
+            <td id="survey_team_id">${item.survey_team_id}</td>
+            <td id="governorateid" style="display: none;">${item.governorateid}</td>
+
+            <td>
+                <button onclick="navigateToGuidnes(this.parentElement.parentElement);" class="btn-guidance">الذهاب الي</button>
+            </td>
+        `;
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        function updatePagination(pagination) {
+            const prevButton = document.getElementById('prevButton');
+            const nextButton = document.getElementById('nextButton');
+
+            prevButton.classList.toggle('disabled', pagination.currentPage -= 1);
+            nextButton.classList.toggle(pagination.currentPage += 1);
+
+        }
+
+        function handleSort(column) {
+            if (sortColumn === column) {
+                sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortOrder = 'asc';
+            }
+            fetchData(currentPage, document.getElementById('searchInput').value, sortColumn, sortOrder);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.data-table th').forEach(th => {
+                th.addEventListener('click', () => {
+                    handleSort(th.id.replace('sort-', ''));
+                });
+            });
+
+            document.getElementById('searchInput').addEventListener('input', function () {
+                fetchData(currentPage, document.getElementById('searchInput').value, sortColumn, sortOrder);
+            });
+
+            // Attach event listeners to pagination buttons
+            document.getElementById('prevButton').addEventListener('click', () => changePage(-1));
+            document.getElementById('nextButton').addEventListener('click', () => changePage(1));
+
+            // Fetch data when the page loads
+            fetchData(currentPage, document.getElementById('searchInput').value, "requestnumber", "asc");
+        });
+
+        function navigateToGuidnes(row) {
+            const requestNumber = row.querySelector('td:nth-child(1)').textContent;
+            const requestid = row.querySelector('td:nth-child(2)').textContent;
+            const requesterName = row.querySelector('td:nth-child(3)').textContent;
+            const areaRequest = row.querySelector('td:nth-child(4)').textContent;
+            const companyName = row.querySelector('td:nth-child(5)').textContent;
+            const sector = row.querySelector('td:nth-child(6)').textContent;
+            const ssec = row.querySelector('td:nth-child(7)').textContent;
+            const secText = row.querySelector('td:nth-child(8)').textContent;
+            const ssecText = row.querySelector('td:nth-child(9)').textContent;
+            const fullname = row.querySelector('td:nth-child(10)').textContent;
+            const surveyTeamId = row.querySelector('td:nth-child(11)').textContent;
+            const governorateid = row.querySelector('td:nth-child(12)').textContent;
+
+            // تخزين البيانات في localStorage
+            localStorage.setItem('requestNumber', requestNumber);
+            localStorage.setItem('requestid', requestid);
+            localStorage.setItem('requesterName', requesterName);
+            localStorage.setItem('areaRequest', areaRequest);
+            localStorage.setItem('companyName', companyName);
+            localStorage.setItem('sector', sector);
+            localStorage.setItem('ssec', ssec);
+            localStorage.setItem('secText', secText);
+            localStorage.setItem('ssecText', ssecText)
+            localStorage.setItem('fullname', fullname);
+            localStorage.setItem('surveyTeamId', surveyTeamId);
+            localStorage.setItem('governorateid', governorateid);
+
+            // الانتقال إلى صفحة guidnes.html
+            window.location.href = 'guidnes.html';
+        }
+    </script>
+</body>
+
+</html>

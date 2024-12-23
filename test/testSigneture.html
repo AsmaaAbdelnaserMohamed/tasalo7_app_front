@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="/signature_pad.min.js"></script>
+</head>
+
+<body>
+    <div class="form-container-footer">
+
+        <fieldset>
+            <h3>بيانات القائم بالرفع المساحي</h3>
+            <div class="form-group">
+                <label for="mo3aina_number"> رقم المعاينة:</label>
+                <input type="text" id="mo3aina_number" name="mo3aina_number">
+            </div>
+            <br>
+            <div class="form-group" id="lastSection">
+                <div class="signatureDiv">
+                    <h4>توقيع القائم بالرفع:</h4>
+                    <canvas id="signature-pad-surveyor" style="border: 1px solid #000;"></canvas>
+                    <div class="tools">
+                        <button type="button" id="confirm-signature-surveyor">تأكيد
+                            التوقيع</button>
+                        <button type="button" id="clear-signature-surveyor">مسح</button>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <button type="button" id="send-data">إرسال البيانات</button>
+
+    <script>
+        // signature-pad
+        document.addEventListener('DOMContentLoaded', function () {
+            const signaturePadSurveyor = document.getElementById("signature-pad-surveyor");
+            const confirmSignatureSurveyorButton = document.getElementById("confirm-signature-surveyor");
+            const clearSignatureButton = document.getElementById("clear-signature-surveyor");
+
+            // إعداد التوقيع على الكانفاس
+            const canvas = signaturePadSurveyor;
+            const signaturePad = new SignaturePad(canvas);
+
+            // وظيفة لمسح التوقيع
+            function clearSignature(role) {
+                if (role === 'surveyor') {
+                    signaturePad.clear();
+                }
+            }
+
+            // وظيفة لتجميد التوقيع (منع الرسم)
+            // function freezeSignature() {
+            //     canvas.style.pointerEvents = "none"; // منع التفاعل مع الكانفاس بعد التأكيد
+            // }
+
+            // إضافة حدث لتأكيد التوقيع مع التأكيد وتنزيله
+            confirmSignatureSurveyorButton.addEventListener("click", () => {
+                if (signaturePad.isEmpty()) {
+                    alert("يرجى توقيع الحقل قبل التأكيد.");
+                } else {
+                    const isConfirmed = confirm("هل أنت متأكد من تأكيد التوقيع؟");
+                    if (isConfirmed) {
+                        // تجميد التوقيع
+                        // freezeSignature();
+
+                        // تنزيل التوقيع
+                        const signatureData = signaturePad.toDataURL("image/png");
+                        const link = document.createElement("a");
+                        link.href = signatureData;
+                        link.download = "signature.png"; // يمكن تغيير الاسم هنا
+                        link.click();
+
+                        console.log("تم تأكيد التوقيع وتنزيله.");
+                    }
+                }
+            });
+
+            // إضافة حدث لمسح التوقيع
+            clearSignatureButton.addEventListener("click", () => {
+                clearSignature('surveyor');  // مسح التوقيع عندما يتم الضغط على زر المسح
+            });
+        });
+    </script>
+</body>
+
+</html>

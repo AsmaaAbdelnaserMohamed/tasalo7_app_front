@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inputs with Dropdown</title>
+    <style>
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content div {
+            padding: 12px 16px;
+            cursor: pointer;
+        }
+
+        .dropdown-content div:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .input-container {
+            position: relative;
+            display: inline-block;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="input-container">
+        <input type="text" id="input-top" class="input-top" placeholder="الشمالي">
+        <div id="dropdown-top" class="dropdown-content">
+            <div>الخيار 1</div>
+            <div>الخيار 2</div>
+            <div>الخيار 3</div>
+        </div>
+    </div>
+    
+    <div class="input-container">
+        <input type="text" id="input-bottom" class="input-bottom" placeholder="الجنوبي">
+        <div id="dropdown-bottom" class="dropdown-content">
+            <div>الخيار 1</div>
+            <div>الخيار 2</div>
+            <div>الخيار 3</div>
+        </div>
+    </div>
+
+    <div class="input-container">
+        <input type="text" id="input-left" class="input-left" placeholder="الغربي">
+        <div id="dropdown-left" class="dropdown-content">
+            <div>الخيار 1</div>
+            <div>الخيار 2</div>
+            <div>الخيار 3</div>
+        </div>
+    </div>
+
+    <div class="input-container">
+        <input type="text" id="input-right" class="input-right" placeholder="الشرقي">
+        <div id="dropdown-right" class="dropdown-content">
+            <div>الخيار 1</div>
+            <div>الخيار 2</div>
+            <div>الخيار 3</div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.input-top, .input-bottom, .input-left, .input-right').forEach(function(input) {
+            input.addEventListener('click', function() {
+                const id = this.id.replace('input-', 'dropdown-');
+                document.getElementById(id).classList.toggle('show');
+            });
+        });
+
+        document.querySelectorAll('.dropdown-content div').forEach(function(option) {
+            option.addEventListener('click', function() {
+                const inputId = this.parentElement.id.replace('dropdown-', 'input-');
+                document.getElementById(inputId).value = this.textContent;
+                this.parentElement.classList.remove('show');
+            });
+        });
+
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.input-top, .input-bottom, .input-left, .input-right')) {
+                const dropdowns = document.querySelectorAll('.dropdown-content.show');
+                dropdowns.forEach(dropdown => dropdown.classList.remove('show'));
+            }
+        });
+    </script>
+</body>
+</html>

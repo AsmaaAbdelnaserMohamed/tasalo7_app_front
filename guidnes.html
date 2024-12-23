@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>استمارة رفع ميداني لطلبات مركزالمساحة ثلاثية الابعاد</title>
+    <meta name="theme-color" content="#ff0000" />
+    <link rel="stylesheet" href="fonts/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="/images/favicon.ico">
+</head>
+
+<body>
+    <div class="container">
+        <div>
+            <div class="header">
+                <div class="header-title">
+                    <p class="titlee">مركز المساحة ثلاثية الابعاد<br>بجمهورية مصر العربية</p>
+                </div>
+                <div class="header-text">
+                    <h2>استمارة رفع ميداني لطلبات مركز المساحة ثلاثية الابعاد</h2>
+                </div>
+                <div class="header-logo">
+                    <img src="images/logo.png" alt="Logo" style="width: 100%;">
+                </div>
+            </div>
+            <form id="fileUploadForm" enctype="multipart/form-data">
+                <div class="content">
+                    <div class="left-section">
+                        <div class="form-section">
+                            <!-- Form Fields -->
+                            <form id="dataForm">
+
+                                <fieldset>
+                                    <h3 class="special-heading">المعطيات</h3>
+
+
+                                    <div class="form-group">
+                                        <label for="mo3aina_number"> رقم المعاينة:</label>
+                                        <input type="text" id="mo3aina_number" name="mo3aina_number" readonly>
+                                    </div>
+
+
+                                    <div class="form-grid">
+                                        <div class="form-group">
+                                            <label for="requester_name">اسم المواطن:</label>
+                                            <input type="text" id="requester_name" name="requester_name" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="gov">المحافظة:</label>
+                                            <input type="text" id="gov" name="gov" readonly>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="phonenumber">رقم التليفون:</label>
+                                            <input type="text" id="phonenumber" name="phonenumber" readonly>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="addeddate">التاريخ:</label>
+                                            <input type="addeddate" class="small-input" name="addeddate" id="addeddate"
+                                                readonly>
+                                        </div>
+                                        <div class="form-grid coordinates form-group">
+                                            <div class="form-group">
+                                                <label for="y_coordinate">خط الطول (Y):</label>
+                                                <input type="text" id="y_coordinate" name="y_coordinate" readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="x_coordinate">دائرة العرض (X):</label>
+                                                <input type="text" id="x_coordinate" name="x_coordinate" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="detailed_address">العنوان تفصيلياً:</label>
+                                            <textarea id="detailed_address" name="detailed_address" readonly></textarea>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset>
+                                    <h3 class="special-heading">البيانات التي تملأ بواسطة القائم بعملية الرفع</h3>
+                                    <div class="form-grid">
+                                        <div class="form-group">
+                                            <label for="height_building_top_point">ارتفاع العقار من اعلي نقطة:</label>
+                                            <input type="number" id="height_building_top_point"
+                                                name="height_building_top_point">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="height_building_roof">ارتفاع العقار من ظهر بلاطة الدور
+                                                الاخير:</label>
+                                            <input type="number" id="height_building_roof" name="height_building_roof">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="description_building">وصف العقار:</label>
+                                            <textarea id="description_building" name="description_building"></textarea>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="notes">ملاحظات اخري:</label>
+                                            <textarea id="notes" name="notes"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <br>
+                                    <div class="form-group">
+                                        <label for="used_tools">وتم ذلك بأستخدام:</label>
+                                        <select name="used_tools" id="used_tools">
+                                            <option value="شريط">شريط</option>
+                                            <option value="ليزر">ليزر</option>
+                                            <option value="الاثنين معاً">الاثنين معاً</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- <fieldset>
+                                        <div class="form-grid coordinates">
+                                            <div class="form-group">
+                                                <label for="used_tools">وتم ذلك بأستخدام:</label>
+                                                <select name="used_tools" id="used_tools">
+                                                    <option value="شريط">شريط</option>
+                                                    <option value="ليزر">ليزر</option>
+                                                    <option value="الاثنين معاً">الاثنين معاً</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </fieldset> -->
+
+
+
+                                    <fieldset>
+                                        <h3 class="">احداثيات من منتصف سطح العقار</h3>
+                                        <div class="form-grid coordinates">
+                                            <div class="form-group">
+                                                <label for="latitude">خط العرض (X):</label>
+                                                <input type="text" id="latitude" name="latitude" readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="longitude">خط الطول (Y):</label>
+                                                <input type="text" id="longitude" name="longitude" readonly>
+                                            </div>
+                                        </div>
+                                        <!-- <br>
+                                        <div class="form-group">
+                                            <label for="address_by_coordinate">العنوان طبقاً للأحداثيات:</label>
+                                            <textarea id="address_by_coordinate" name="address_by_coordinate"
+                                                readonly></textarea>
+                                        </div>
+                                        <br> -->
+                                        <div class="getLocationBtn">
+                                            <button type="button" id="getLocationButton">
+                                                <img src="images/getlocation2.png" alt="location" srcset="">
+                                            </button>
+                                        </div>
+                                    </fieldset>
+
+                                    <div class="camera-container">
+                                        <button type="button" id="openCameraPopup">فتح الكاميرا والتقاط الصورة
+                                        </button>
+                                        <div id="error-message" class="error"></div>
+                                    </div>
+                                </fieldset>
+
+                                <div class="declaration">
+                                    <div class="form-container-footer">
+                                        <fieldset>
+                                            <h3 class="special-heading">بيانات القائم بعملية الرفع</h3>
+                                            <div class="form-grid">
+                                                <div class="form-group">
+                                                    <label for="surveyor_name">اسم القائم بعملية الرفع (الاسم
+                                                        رباعي):</label>
+                                                    <input type="text" id="surveyor_name" name="surveyor_name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="surveyor_nationalid">الرقم القومي:</label>
+                                                    <input type="text" id="surveyor_nationalid"
+                                                        name="surveyor_nationalid">
+                                                </div>
+                                                <!-- <div class="form-group">
+                                                    <label for="geha_name">اسم الجهة التابع لها:</label>
+                                                    <input type="text" id="geha_name" name="geha_name">
+                                                </div> -->
+
+                                                <div class="form-group">
+                                                    <label for="geha_name">اسم الجهة التابع لها:</label>
+                                                    <input list="geha_options" id="geha_name" name="geha_name">
+                                                    <datalist id="geha_options">
+                                                        <option value="ايدج برو">
+                                                            <!-- <option value="الجهة 2">
+                                                        <option value="الجهة 3">
+                                                        <option value="الجهة 4"> -->
+                                                    </datalist>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group" id="lastSection">
+                                                <div class="signatureDiv">
+                                                    <h4>توقيع القائم بالرفع:</h4>
+                                                    <canvas id="signature-pad-surveyor"
+                                                        style="border: 1px solid #000;"></canvas>
+                                                    <div class="tools">
+                                                        <button type="button" id="confirm-signature-surveyor">تأكيد
+                                                            التوقيع</button>
+                                                        <button type="button" id="clear-signature-surveyor">مسح</button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="instructions">
+                                                    <h3 style="color: #d9534f; font-size: 1.3rem;">تعليمات هامة :</h3>
+                                                    <ul
+                                                        style="font-size: 1.1rem; line-height: 1.8; list-style-type: disc; padding-right: 20px; direction: rtl; text-align: right;">
+                                                        <li>عدم الكشط أو الشطب على الاستمارة بعد طباعتها.</li>
+                                                        <li>في حالة ثبوت أن القائم بعملية الرفع تلقى أي مبالغ مالية سيتم
+                                                            تعرضه للمسائلة القانونية.</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="btns">
+                                        <!-- Add Save Button -->
+                                        <button type="button" id="send-data">إرسال البيانات</button>
+                                        <div class="reportGruop">
+                                            <button type="button" onclick="window.print()">اصدار تقرير</button>
+                                            <button type="button" onclick="navigateToGuidnesList()">عودة</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+            </form>
+            <div id="responseMessage"></div>
+        </div>
+    </div>
+
+    <script src="/signature_pad.min.js"></script>
+    <script src="dom-to-image.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script src="fabric.min.js"></script>
+    <script src="scripts.js"></script>
+</body>
+
+</html>

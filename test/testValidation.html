@@ -1,0 +1,321 @@
+<div class="form-group">
+    <label for="applicant-name"> اسم صاحب الطلب:</label>
+    <input type="text" id="applicant-name" name="applicant-name" required>
+</div>
+
+
+<div class="form-group">
+    <label for="survey_type">النوع بعد الرفع:</label>
+    <select id="survey_type" name="survey_type" required onchange="updateUsage()">
+        <option value="">اختر</option>
+        <option value=0>وحدة</option>
+        <option value=1>ارض مقاسة بالمتر</option>
+        <option value=2>ارض مقاسة بالفدان</option>
+        <option value=3>مبني</option>
+        <option value=4>جراج</option>
+        <option value=10>وحدة دوبلكس</option>
+        <option value=13>شالية</option>
+        <option value=15>فيلا</option>
+        <option value=18>وحدة تربليكس</option>
+        <option value=19>وحدة كوادريبلكس</option>
+    </select>
+</div>
+
+<div id="building-fields">
+    <div class="form-group">
+        <label for="building-number">رقم العقار:</label>
+        <input type="text" id="building-number" name="building-number">
+    </div>
+
+    <div class="form-group">
+        <label for="ket3a-number">رقم القطعة:</label>
+        <input type="text" id="ket3a-number" name="ket3a-number">
+    </div>
+
+    <div class="form-group">
+        <label for="hod-number">رقم الحوض:</label>
+        <input type="text" id="hod-number" name="hod-number">
+    </div>
+</div>
+
+<div id="apartment-fields">
+    <div class="form-group">
+        <label for="apartment-ket3a-number">رقم العقار:</label>
+        <input type="text" id="apartment-ket3a-number" name="building-number">
+    </div>
+    <div class="form-group">
+        <label for="floor_number">رقم الدور رقمياً:</label>
+        <input type="number" id="floor_number" name="floor_number">
+    </div>
+
+    <div class="form-group">
+        <label for="floor_number_text">رقم الدور كتابياً:</label>
+        <input type="text" id="floor_number_text" name="floor_number_text">
+    </div>
+
+    <div class="form-group">
+        <label for="actual_apartment_number">رقم الوحدة فعلياً:</label>
+        <input type="text" id="actual_apartment_number" name="actual_apartment_number">
+    </div>
+    <div class="form-group">
+        <label for="survey_apartment_number">رقم الوحدة مساحياً:</label>
+        <input type="number" id="survey_apartment_number" name="survey_apartment_number">
+    </div>
+</div>
+<div id="land-fields">
+    <div class="form-group">
+        <label for="land-ket3a-number">رقم القطعة:</label>
+        <input type="text" id="land-ket3a-number" name="ket3a-number">
+    </div>
+    <div class="form-group">
+        <label for="land-hod-number">رقم الحوض:</label>
+        <input type="text" id="land-hod-number" name="hod-number">
+    </div>
+</div>
+<br>
+
+<div class="form-group">
+    <label for="usage_building">الإستخدام حسب نوع الطلب:</label>
+    <select id="usage_building" name="usage_building">
+        <option value=''>اختر</option>
+        <option value=1>سكنى</option>
+        <option value=2>تجارى</option>
+        <option value=3>ادارى</option>
+        <option value=4>سكنى تجارى</option>
+        <option value=5>سكنى ادارى</option>
+        <option value=6>تعليمى</option>
+        <option value=7>ترفيهى</option>
+        <option value=8>ارض مقاسة بالمتر</option>
+        <option value=9>ارض مقاسة بالفدان</option>
+        <option value=10>جراج خاص</option>
+        <option value=11>ارض زراعية</option>
+        <option value=12>جراج تجارى</option>
+        <option value=13>ادارى تجارى</option>
+        <option value=14>مخزن</option>
+        <!-- <option value=15>مصنع</option> -->
+    </select>
+</div>
+
+<div class="form-group">
+    <label for="detailed_address">العنوان تفصيلياً:</label>
+    <textarea id="detailed_address" name="detailed_address"></textarea>
+</div>
+
+<div class="form-group coordinates">
+    <label for="area_survey">المساحة طبقاً للعقد:</label>
+    <input type="text" id="area_survey" name="area_survey">
+</div>
+
+<div class="form-group">
+    <label for="description">وصف العقار:</label>
+    <textarea id="description" name="description"></textarea>
+</div>
+
+<div class="form-group">
+    <label for="description_nearest_sign">التوصيف من حيث اقرب علامة مميزة:</label>
+    <input type="text" id="description_nearest_sign" name="description_nearest_sign">
+</div>
+
+
+
+<div class="input-container">
+    <input type="text" id="input-top" class="input-top" placeholder="الشمالي">
+    <div id="dropdown-top" class="dropdown-content">
+        <div>جار</div>
+        <div>شارع</div>
+        <div>قطعة</div>
+    </div>
+</div>
+
+<div class="input-container">
+    <input type="text" id="input-bottom" class="input-bottom" placeholder="الجنوبي">
+    <div id="dropdown-bottom" class="dropdown-content">
+        <div>جار</div>
+        <div>شارع</div>
+        <div>قطعة</div>
+    </div>
+</div>
+
+<div class="input-container">
+    <input type="text" id="input-left" class="input-left" placeholder="الغربي">
+    <div id="dropdown-left" class="dropdown-content">
+        <div>جار</div>
+        <div>شارع</div>
+        <div>قطعة</div>
+    </div>
+</div>
+
+<div class="input-container">
+    <input type="text" id="input-right" class="input-right" placeholder="الشرقي">
+    <div id="dropdown-right" class="dropdown-content">
+        <div>جار</div>
+        <div>شارع</div>
+        <div>قطعة</div>
+    </div>
+</div>
+
+
+<fieldset>
+    <table>
+        <tr>
+            <td><label for="north_border_length">طول الحد البحري تقريباً:</label></td>
+            <td><input type="number" id="north_border_length" name="north_border_length">
+            </td>
+        </tr>
+        <tr>
+            <td><label for="east_border_length">طول الحد الشرقي تقريباً:</label></td>
+            <td><input type="number" id="east_border_length" name="east_border_length"></td>
+        </tr>
+        <td><label for="south_border_length">طول الحد القبلي تقريباً:</label></td>
+        <td><input type="number" id="south_border_length" name="south_border_length">
+        </td>
+        </tr>
+        <tr>
+            <td><label for="west_border_length">طول الحد الغربي تقريباً:</label></td>
+            <td><input type="number" id="west_border_length" name="west_border_length"></td>
+        </tr>
+    </table>
+</fieldset>
+
+
+
+<script>
+
+    document.getElementById('surveyForm').addEventListener('submit', function (event) {
+        // منع الإرسال الافتراضي للنموذج إذا لم يكن هناك تحقق ناجح
+        event.preventDefault();
+
+        let isValid = true;
+        let errorMessages = [];
+
+        // التحقق من اسم صاحب الطلب
+        const applicantName = document.getElementById('applicant-name').value.trim();
+        if (!applicantName) {
+            isValid = false;
+            errorMessages.push('يرجى إدخال اسم صاحب الطلب.');
+        }
+
+        // التحقق من النوع بعد الرفع
+        const surveyType = document.getElementById('survey_type').value;
+        if (!surveyType) {
+            isValid = false;
+            errorMessages.push('يرجى اختيار النوع بعد الرفع.');
+        }
+
+        // التحقق من الاستخدام حسب نوع الطلب
+        const usageBuilding = document.getElementById('usage_building').value;
+        if (!usageBuilding) {
+            isValid = false;
+            errorMessages.push('يرجى اختيار الاستخدام حسب نوع الطلب.');
+        }
+
+        // التحقق من العنوان التفصيلي
+        const detailedAddress = document.getElementById('detailed_address').value.trim();
+        if (!detailedAddress) {
+            isValid = false;
+            errorMessages.push('يرجى إدخال العنوان التفصيلي.');
+        }
+
+        // التحقق من الحقول بناءً على نوع الرفع
+        const surveyTypeValue = parseInt(surveyType);
+
+        // حقول المبنى
+        if (surveyTypeValue === 3 || surveyTypeValue === 4 || surveyTypeValue === 10 || surveyTypeValue === 13 || surveyTypeValue === 15) {
+            const buildingNumber = document.getElementById('building-number').value.trim();
+            const ket3aNumber = document.getElementById('ket3a-number').value.trim();
+            const hodNumber = document.getElementById('hod-number').value.trim();
+
+            if (!buildingNumber) {
+                isValid = false;
+                errorMessages.push('يرجى إدخال رقم العقار.');
+            }
+            if (!ket3aNumber) {
+                isValid = false;
+                errorMessages.push('يرجى إدخال رقم القطعة.');
+            }
+            if (!hodNumber) {
+                isValid = false;
+                errorMessages.push('يرجى إدخال رقم الحوض.');
+            }
+        }
+
+        // حقول الشقة
+        if (surveyTypeValue === 1 || surveyTypeValue === 2 || surveyTypeValue === 10 || surveyTypeValue === 13 || surveyTypeValue === 15) {
+            const apartmentKet3aNumber = document.getElementById('apartment-ket3a-number').value.trim();
+            const floorNumber = document.getElementById('floor_number').value.trim();
+            const floorNumberText = document.getElementById('floor_number_text').value.trim();
+            const actualApartmentNumber = document.getElementById('actual_apartment_number').value.trim();
+            const surveyApartmentNumber = document.getElementById('survey_apartment_number').value.trim();
+
+            if (!apartmentKet3aNumber) {
+                isValid = false;
+                errorMessages.push('يرجى إدخال رقم العقار للشقة.');
+            }
+            if (!floorNumber) {
+                isValid = false;
+                errorMessages.push('يرجى إدخال رقم الدور رقمياً.');
+            }
+            if (!floorNumberText) {
+                isValid = false;
+                errorMessages.push('يرجى إدخال رقم الدور كتابياً.');
+            }
+            if (!actualApartmentNumber) {
+                isValid = false;
+                errorMessages.push('يرجى إدخال رقم الوحدة فعلياً.');
+            }
+            if (!surveyApartmentNumber) {
+                isValid = false;
+                errorMessages.push('يرجى إدخال رقم الوحدة مساحياً.');
+            }
+        }
+
+        // حقول الأرض
+        if (surveyTypeValue === 1 || surveyTypeValue === 2) {
+            const landKet3aNumber = document.getElementById('land-ket3a-number').value.trim();
+            const landHodNumber = document.getElementById('land-hod-number').value.trim();
+
+            if (!landKet3aNumber) {
+                isValid = false;
+                errorMessages.push('يرجى إدخال رقم القطعة للأرض.');
+            }
+            if (!landHodNumber) {
+                isValid = false;
+                errorMessages.push('يرجى إدخال رقم الحوض للأرض.');
+            }
+        }
+
+        // التحقق من الأطوال الحدودية
+        const northBorderLength = document.getElementById('north_border_length').value.trim();
+        const eastBorderLength = document.getElementById('east_border_length').value.trim();
+        const southBorderLength = document.getElementById('south_border_length').value.trim();
+        const westBorderLength = document.getElementById('west_border_length').value.trim();
+
+        if (!northBorderLength) {
+            isValid = false;
+            errorMessages.push('يرجى إدخال طول الحد البحري تقريباً.');
+        }
+        if (!eastBorderLength) {
+            isValid = false;
+            errorMessages.push('يرجى إدخال طول الحد الشرقي تقريباً.');
+        }
+        if (!southBorderLength) {
+            isValid = false;
+            errorMessages.push('يرجى إدخال طول الحد القبلي تقريباً.');
+        }
+        if (!westBorderLength) {
+            isValid = false;
+            errorMessages.push('يرجى إدخال طول الحد الغربي تقريباً.');
+        }
+
+        // عرض رسائل الأخطاء
+        if (!isValid) {
+            alert(errorMessages.join('\n'));
+        } else {
+            // إذا كان النموذج صالحًا، يمكنك إرسال النموذج هنا
+            alert('النموذج صحيح! سيتم إرسال البيانات.');
+            // يمكنك إزالة التعليق أدناه لتمكين الإرسال الفعلي للنموذج
+            // this.submit();
+        }
+    });
+
+</script>

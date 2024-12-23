@@ -1,0 +1,66 @@
+<fieldset>
+    <h3>الاحداثيات</h3>
+    <div class="form-group coordinates">
+        <label for="latitude">خط العرض (X):</label>
+        <input type="text" id="latitude" name="latitude" readonly>
+        <label for="longitude">خط الطول (Y):</label>
+        <input type="text" id="longitude" name="longitude" readonly>
+    </div>
+    <br>
+    <div class="form-group">
+        <label for="address">العنوان طبقاً للأحداثيات:</label>
+        <textarea id="address" name="address" readonly></textarea>
+    </div>
+    <br>
+    <div class="getLocationBtn">
+        <button type="button" id="getLocationButton">get location</button>
+    </div>
+</fieldset>
+
+<script>
+    document.getElementById('getLocationButton').addEventListener('click', function () {
+        const userConfirmation = confirm("هل متأكد من موقعك الحالي ؟");
+
+        if (userConfirmation) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                alert("خطأ في تحديد الموقع");
+            }
+        } else {
+            alert("تم إلغاء عملية تحديد الموقع.");
+        }
+    });
+
+    function showPosition(position) {
+        let latitude = position.coords.latitude;
+        let longitude = position.coords.longitude;
+
+        document.getElementById('latitude').value = latitude;
+        document.getElementById('longitude').value = longitude;
+
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}&accept-language=ar`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('address').value = data.display_name;
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function showError(error) {
+        switch (error.code) {
+            case error.PERMISSION_DENIED:
+                alert("تم رفض طلب الموقع من قبل المستخدم.");
+                break;
+            case error.POSITION_UNAVAILABLE:
+                alert("معلومات الموقع غير متوفرة.");
+                break;
+            case error.TIMEOUT:
+                alert("انتهى وقت الطلب للحصول على الموقع.");
+                break;
+            case error.UNKNOWN_ERROR:
+                alert("حدث خطأ غير معروف.");
+                break;
+        }
+    }
+</script>
